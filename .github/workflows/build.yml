@@ -24,11 +24,13 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Build and push the Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: ${{ github.ref == 'refs/heads/main'}}
+          push: ${{ github.ref == 'refs/heads/dev'}}
           tags: |
             ghcr.io/vitrinagram/${{ env.BUILD_NAME }}-${{ env.ENV_TYPE }}:latest
             ghcr.io/vitrinagram/${{ env.BUILD_NAME }}-${{ env.ENV_TYPE }}:${{ github.ref_name }}-${{ steps.useful_vars.outputs.short_sha }}-${{ steps.useful_vars.outputs.timestamp }}
