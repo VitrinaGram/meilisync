@@ -1,4 +1,8 @@
 name: build
+env:
+  BUILD_NAME: meilisync
+  ENV_TYPE: production
+
 on:
   push:
     branches:
@@ -14,33 +18,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Build and push the Docker image
+        uses: docker/build-push-action@v4
         with:
-          images: long2ice/meilisync
+          context: .
+          push: ${{ github.ref == 'refs/heads/main'}}
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: ${{ github.event_name != 'pull_request' }}
-          platforms: linux/amd64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+            ghcr.io/vitrinagram/${{ env.BUILD_NAME }}-${{ env.ENV_TYPE }}:latest
+            ghcr.io/vitrinagram/${{ env.BUILD_NAME }}-${{ env.ENV_TYPE }}:${{ github.ref_name }}-${{ steps.useful_vars.outputs.short_sha }}-${{ steps.useful_vars.outputs.timestamp }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # no-cache: true
