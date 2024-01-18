@@ -42,7 +42,7 @@ jobs:
       
         with:
           context: .
-          push: ${{ github.ref == 'refs/heads/dev'}}
+          push: true
           tags: |
             ghcr.io/vitrinagram/${{ env.BUILD_NAME }}-${{ env.ENV_TYPE }}:latest
             ghcr.io/vitrinagram/${{ env.BUILD_NAME }}-${{ env.ENV_TYPE }}:${{ github.ref_name }}-${{ steps.useful_vars.outputs.short_sha }}-${{ steps.useful_vars.outputs.timestamp }}
