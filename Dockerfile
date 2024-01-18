@@ -13,4 +13,7 @@ WORKDIR /meilisync
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY --from=builder /meilisync /meilisync
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["meilisync", "--config", "/meilisync/sync.yaml", "start"]
