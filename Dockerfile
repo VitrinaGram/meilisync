@@ -14,6 +14,7 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY --from=builder /meilisync /meilisync
 COPY entrypoint.sh /entrypoint.sh
+RUN apt-get update && apt-get install -y gettext-base
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["meilisync", "--config", "/meilisync/sync.yaml", "start"]
