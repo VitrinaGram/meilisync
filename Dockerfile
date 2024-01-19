@@ -17,4 +17,4 @@ COPY entrypoint.sh /entrypoint.sh
 RUN apt-get update && apt-get install -y gettext-base
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["meilisync", "--config", "/meilisync/sync.yaml", "start"]
+CMD ["meilisync", "--config", "/meilisync/configs/sync.yaml", "start"]
