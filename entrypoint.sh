@@ -1,6 +1,6 @@
 #!/bin/bash
 # Display the current directory structure
-ls -R /meilisync
+ls -l /meilisync
 
 # Заменяем плейсхолдеры переменными окружения и создаём конфигурационный файя
 
